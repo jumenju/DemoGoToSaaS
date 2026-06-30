@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Go to SaaS</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+    integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    :root {
+      --cf-orange: #f6821f;
+      --cf-blue: #003682;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--cf-blue) 0%, #0051cc 100%);
+      color: #fff;
+      padding: 80px 20px 60px;
+      text-align: center;
+      border-bottom: 5px solid var(--cf-orange);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    header h1 span {
+      color: var(--cf-orange);
+    }
+
+    header h2 {
+      font-size: 1.3rem;
+      font-weight: 400;
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    .badge-cf {
+      background-color: var(--cf-orange);
+      color: #fff;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cf-blue);
+      border-left: 4px solid var(--cf-orange);
+      padding-left: 12px;
+      margin-bottom: 24px;
+    }
+
+    .changelog-table thead {
+      background-color: var(--cf-blue);
+      color: #fff;
+    }
+
+    .changelog-table tbody tr:hover {
+      background-color: #e8f0ff;
+    }
+
+    .changelog-table td,
+    .changelog-table th {
+      vertical-align: middle;
+      padding: 14px 18px;
+    }
+
+    .powered-by {
+      font-size: 0.8rem;
+      color: #888;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    footer {
+      background-color: var(--cf-blue);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.85rem;
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--cf-orange);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Go to <span>SaaS</span></h1>
+    <h2>Démonstration</h2>
+  </header>
+
+  <main class="container my-5">
+
+    <section>
+      <h3 class="section-title">Changelog</h3>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+          <table class="table changelog-table table-striped table-bordered mb-0 rounded overflow-hidden">
+            <thead>
+              <tr>
+                <th style="width: 160px;">Date</th>
+                <th>Changement</th>
+                <th style="width: 200px;">Personnes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026-06-30</td>
+                <td>Création du site de démonstration GoTo SaaS</td>
+                <td>Julien Menu</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="powered-by mt-3">
+        Hébergé sur
+        <a href="https://github.com/jumenju/DemoGoToSaaS" target="_blank">GitHub</a>
+        &nbsp;·&nbsp; CDN via
+        <a href="https://cdnjs.cloudflare.com" target="_blank">Cloudflare cdnjs</a>
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2026 Go to SaaS &mdash; Formation &amp; Démonstration
+  </footer>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"
+    integrity="sha512-7Pi/otdlr5IgjEf8NKnRMKfWdpCPbFUqrM40ZFMFIGRYdJoRHFkFjV4yQ9LIQkHu8E5OJ3CkLa2KBuYs3rbEA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+</body>
+</html>
