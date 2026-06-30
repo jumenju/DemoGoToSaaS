@@ -172,33 +172,32 @@
       const tbody = document.getElementById("changelog-body");
       try {
         const res = await fetch(
-          `https://api.github.com/repos/${REPO}/pulls?state=closed&sort=updated&direction=desc&per_page=50`
+          `https://api.github.com/repos/${REPO}/commits?per_page=100`
         );
-        const pulls = await res.json();
-        const merged = pulls.filter(pr => pr.merged_at);
+        const commits = await res.json();
 
-        if (merged.length === 0) {
+        if (!Array.isArray(commits) || commits.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">Aucune contribution pour l'instant.</td></tr>`;
           return;
         }
 
-        tbody.innerHTML = merged.map(pr => {
-          const date = new Date(pr.merged_at).toLocaleDateString("fr-FR", {
+        tbody.innerHTML = commits.map(c => {
+          const date = new Date(c.commit.author.date).toLocaleDateString("fr-FR", {
             year: "numeric", month: "2-digit", day: "2-digit"
           });
-          const title = escapeHtml(pr.title);
-          const login = escapeHtml(pr.user.login);
-          const name = escapeHtml(pr.user.login);
-          const avatar = pr.user.avatar_url;
-          const prUrl = pr.html_url;
+          const message = escapeHtml(c.commit.message.split("\n")[0]);
+          const sha = c.sha.slice(0, 7);
+          const url = c.html_url;
+          const login = c.author ? escapeHtml(c.author.login) : escapeHtml(c.commit.author.name);
+          const avatar = c.author ? c.author.avatar_url : `https://github.com/identicons/${encodeURIComponent(c.commit.author.name)}.png`;
 
           return `
             <tr>
               <td>${date}</td>
-              <td><a href="${prUrl}" target="_blank" class="text-decoration-none">#${pr.number} — ${title}</a></td>
+              <td><a href="${url}" target="_blank" class="text-decoration-none font-monospace text-secondary me-2">${sha}</a>${message}</td>
               <td>
                 <img src="${avatar}" alt="${login}" class="avatar" />
-                ${name}
+                ${login}
               </td>
             </tr>`;
         }).join("");
