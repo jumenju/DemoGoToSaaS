@@ -48,11 +48,6 @@
       margin: 0;
     }
 
-    .badge-cf {
-      background-color: var(--cf-orange);
-      color: #fff;
-    }
-
     .section-title {
       font-size: 1.5rem;
       font-weight: 700;
@@ -77,11 +72,24 @@
       padding: 14px 18px;
     }
 
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
     .powered-by {
       font-size: 0.8rem;
       color: #888;
       text-align: center;
       margin-top: 8px;
+    }
+
+    .powered-by a {
+      color: var(--cf-orange);
+      text-decoration: none;
     }
 
     footer {
@@ -96,6 +104,12 @@
     footer a {
       color: var(--cf-orange);
       text-decoration: none;
+    }
+
+    #loading-row td {
+      text-align: center;
+      color: #888;
+      font-style: italic;
     }
   </style>
 </head>
@@ -113,19 +127,17 @@
 
       <div class="card shadow-sm border-0">
         <div class="card-body p-0">
-          <table class="table changelog-table table-striped table-bordered mb-0 rounded overflow-hidden">
+          <table class="table changelog-table table-striped table-bordered mb-0">
             <thead>
               <tr>
                 <th style="width: 160px;">Date</th>
                 <th>Changement</th>
-                <th style="width: 200px;">Personnes</th>
+                <th style="width: 220px;">Personnes</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>2026-06-30</td>
-                <td>Création du site de démonstration GoTo SaaS</td>
-                <td>Julien Menu</td>
+            <tbody id="changelog-body">
+              <tr id="loading-row">
+                <td colspan="3">Chargement des contributions...</td>
               </tr>
             </tbody>
           </table>
@@ -133,7 +145,7 @@
       </div>
 
       <p class="powered-by mt-3">
-        Hébergé sur
+        Données en direct depuis
         <a href="https://github.com/jumenju/DemoGoToSaaS" target="_blank">GitHub</a>
         &nbsp;·&nbsp; CDN via
         <a href="https://cdnjs.cloudflare.com" target="_blank">Cloudflare cdnjs</a>
@@ -152,5 +164,60 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   ></script>
+
+  <script>
+    const REPO = "jumenju/DemoGoToSaaS";
+
+    async function loadChangelog() {
+      const tbody = document.getElementById("changelog-body");
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${REPO}/pulls?state=closed&sort=updated&direction=desc&per_page=50`
+        );
+        const pulls = await res.json();
+        const merged = pulls.filter(pr => pr.merged_at);
+
+        if (merged.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">Aucune contribution pour l'instant.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = merged.map(pr => {
+          const date = new Date(pr.merged_at).toLocaleDateString("fr-FR", {
+            year: "numeric", month: "2-digit", day: "2-digit"
+          });
+          const title = escapeHtml(pr.title);
+          const login = escapeHtml(pr.user.login);
+          const name = escapeHtml(pr.user.login);
+          const avatar = pr.user.avatar_url;
+          const prUrl = pr.html_url;
+
+          return `
+            <tr>
+              <td>${date}</td>
+              <td><a href="${prUrl}" target="_blank" class="text-decoration-none">#${pr.number} — ${title}</a></td>
+              <td>
+                <img src="${avatar}" alt="${login}" class="avatar" />
+                ${name}
+              </td>
+            </tr>`;
+        }).join("");
+
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">Erreur de chargement : ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    loadChangelog();
+  </script>
+
 </body>
 </html>
